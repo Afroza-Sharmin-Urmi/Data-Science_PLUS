@@ -15,32 +15,32 @@ rules = {
 def expected_counts(nR):
     return [nR * ci / n for ci in C]
 
-def g_statistic(m, e):
+def g_statistic(M, E):
     g = 0
-    for m, e in zip(m, e):
+    for m, e in zip(M, E):
         if m > 0:
             g += 2 * m * log(m / e)
     return g
 
-def chi_square(m, e):
-    return sum((m - e) ** 2 / e for m, e in zip(m, e))
+def chi_square(M, E):
+    return sum((m - e) ** 2 / e for m, e in zip(M, E))
 
 df = 2  # degrees of freedom
 
-for name, m in rules.items():
-    nR = sum(m)
-    e = expected_counts(nR)
+for name, M in rules.items():
+    nR = sum(M)
+    E = expected_counts(nR)
     
-    G = g_statistic(m, e)
-    X = chi_square(m, e)
+    G = g_statistic(M, E)
+    X = chi_square(M, E)
     
     # p-values
     p_G    = chi2.sf(G, df)
     p_chi2 = chi2.sf(X, df)
     
     print(f"\n{name}:")
-    print(f"Observed counts: {m}")
-    print(f"Expected counts: {[round(e,4) for e in e]}")
+    print(f"Observed counts: {M}")
+    print(f"Expected counts: {[round(e,4) for e in E]}")
     print(f"G statistic     = {G:.6f}")
     print(f"Chi-square      = {X:.6f}")
     print(f"p-value (G)     = {p_G:.6g}")
